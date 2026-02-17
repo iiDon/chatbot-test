@@ -1,16 +1,26 @@
-import type { UIMessage } from "ai";
+import type { ChatStatus, UIMessage } from "ai";
 import Markdown from "react-markdown";
 import { ExternalLink } from "lucide-react";
 import { AIResponseResualtType } from "@/types/types";
 
-const AssistantMessageBody = ({ message }: { message: UIMessage }) => {
+type AssistantMessageBodyProps = {
+  message: UIMessage;
+  status?: ChatStatus;
+};
+
+const AssistantMessageBody = ({
+  message,
+  status,
+}: AssistantMessageBodyProps) => {
   const toolSources = message.parts
     .filter(
       (part) =>
         part.type === "tool-webSearch" && part.state === "output-available",
     )
     .flatMap((part) => {
-      const output = part as { results?: AIResponseResualtType[] } | undefined;
+      const output = (
+        part as { output?: { results?: AIResponseResualtType[] } }
+      ).output;
 
       const results = output?.results;
 
@@ -60,7 +70,7 @@ const AssistantMessageBody = ({ message }: { message: UIMessage }) => {
             );
         }
       })}
-      {sources.length > 0 && (
+      {sources.length > 0 && status === "submitted" && (
         <div className="flex flex-wrap gap-1.5 pt-1">
           {sources.map((source, i) => (
             <a

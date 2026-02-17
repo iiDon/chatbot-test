@@ -148,7 +148,7 @@ const ChatContent = ({
             ) : (
               <div key={message.id} className="flex items-start gap-3">
                 <BotAvatar />
-                <AssistantMessageBody message={message} />
+                <AssistantMessageBody message={message} status={status} />
               </div>
             ),
           )}
