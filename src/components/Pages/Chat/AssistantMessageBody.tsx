@@ -2,6 +2,7 @@ import type { ChatStatus, UIMessage } from "ai";
 import Markdown from "react-markdown";
 import { ExternalLink } from "lucide-react";
 import { AIResponseResualtType } from "@/types/types";
+import { hasText } from "@/lib/utils";
 
 type AssistantMessageBodyProps = {
   message: UIMessage;
@@ -41,8 +42,17 @@ const AssistantMessageBody = ({
 
   const sources = toolSources.length > 0 ? toolSources : dbSources;
 
+  const isLoading = status === "streaming" && !hasText(message);
+
   return (
     <div className="flex-1 min-w-0 space-y-2">
+      {isLoading && (
+        <div className="flex items-center gap-1 pt-1.5">
+          <span className="size-2 rounded-full bg-muted-foreground animate-bounce [animation-delay:0ms]" />
+          <span className="size-2 rounded-full bg-muted-foreground animate-bounce [animation-delay:150ms]" />
+          <span className="size-2 rounded-full bg-muted-foreground animate-bounce [animation-delay:300ms]" />
+        </div>
+      )}
       {message.parts.map((part, i) => {
         switch (part.type) {
           case "text":
