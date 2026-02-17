@@ -70,7 +70,7 @@ const AssistantMessageBody = ({
             );
         }
       })}
-      {sources.length > 0 && status === "submitted" && (
+      {sources.length > 0 && status === "ready" && (
         <div className="flex flex-wrap gap-1.5 pt-1">
           {sources.map((source, i) => (
             <a
