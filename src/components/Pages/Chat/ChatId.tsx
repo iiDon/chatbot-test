@@ -78,7 +78,7 @@ const ChatContent = ({
     resolver: standardSchemaResolver(sendMessageSchema),
     defaultValues: {
       messages: [{ content: "", role: "user" }],
-      webSearch: false,
+      webSearch: initialWebSearch,
     },
   });
 
@@ -104,11 +104,10 @@ const ChatContent = ({
   useEffect(() => {
     if (initialQuery && !hasSentInitial.current) {
       hasSentInitial.current = true;
-      form.setValue("webSearch", initialWebSearch);
       sendMessage({ text: initialQuery });
       window.history.replaceState({}, "", `/${chatId}`);
     }
-  }, [initialQuery, initialWebSearch, sendMessage, chatId, form]);
+  }, [initialQuery, sendMessage, chatId]);
 
   useEffect(() => {
     scrollRef.current?.scrollTo({
