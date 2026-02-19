@@ -76,7 +76,9 @@ export async function POST(
 
     const result = streamText({
       model: openai("gpt-4o-mini"),
-      system: "You are a helpful assistant.",
+      system: enableWebSearch
+        ? "You are a helpful assistant. You have access to a webSearch tool. Always use it to search the web before answering."
+        : "You are a helpful assistant.",
       messages: await convertToModelMessages(messages),
       ...(enableWebSearch && {
         tools: {
